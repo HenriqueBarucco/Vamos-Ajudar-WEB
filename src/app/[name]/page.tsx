@@ -3,6 +3,14 @@ export default async function Ong({ params }: { params: { name: string } }) {
 
     const jsonData = await ong.json();
 
+    if (ong.status !== 200) {
+        return (
+            <div className="min-h-screen bg-[#1a1f24] flex justify-center items-center">
+                <p className='text-white'>Não foi encontrada nenhuma ong.</p>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-[#1a1f24] flex justify-center items-center">
             <div className="bg-white rounded-lg shadow-md p-8 w-96">
