@@ -1,0 +1,38 @@
+name: Lint e Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v2
+
+    - name: Configurar Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 20
+
+    - name: Instalar dependências
+      run: npm install
+
+    - name: Executar Lint
+      run: npm run lint
+
+    - name: Build da Aplicação
+      run: npm run build
+
+    - name: Mensagem de Sucesso no WhatsApp
+      run: |
+        curl --location --request POST 'https://easy-whatsapp-api.henriquebarucco.com.br/message/text' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+          "token": "${{ secrets.API_TOKEN }}",
+          "phone": "${{ secrets.PHONE_ID }}",
+          "message": "Deploy em produção de Vamos-Ajudar-WEB realizado com sucesso!"
+        }'
